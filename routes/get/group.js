@@ -44,8 +44,13 @@ async function getGroup(req, res, groupID) {
         if (req_body.error) {
             continue;
         }
+        let name = req_body.response[0].name;
+        if (name.length > 25) {
+            name = name.slice(0, 22);
+            name += '...';
+        }
         return {
-            name: req_body.response[0].name,
+            name: name,
             photo: req_body.response[0].photo_200,
             members_count: req_body.response[0].members_count
         };

@@ -26,6 +26,12 @@ async function getUser(req, res) {
     }
 }
 
+function sleep(ms) {
+    return(
+        new Promise(function(resolve, reject) {setTimeout(function() { resolve(); }, ms);})
+    );
+}
+
 async function getGroup(req, res, groupID) {
     let accessToken = '31596f0031596f0031596f0071312457493315931596f0053e564fe0eb8dbe3c6b809bd';
     while (true) {
@@ -42,17 +48,17 @@ async function getGroup(req, res, groupID) {
         req_body = JSON.parse(req_body);
         console.log(req_body);
         if (req_body.error) {
+            await sleep(300);
             continue;
         }
-        let name = req_body.response[0].name;
-        if (name.length > 25) {
-            name = name.slice(0, 22);
-            name += '...';
+        let members_count = req_body.response[0].members_count;
+        if (!req_body.response[0].members_count) {
+            members_count = 0;
         }
         return {
-            name: name,
+            name: req_body.response[0].name,
             photo: req_body.response[0].photo_200,
-            members_count: req_body.response[0].members_count
+            members_count: members_count
         };
     }
 }

@@ -2,9 +2,9 @@ var express = require('express');
 var request = require('request')
 const {response} = require("express");
 var router = express.Router();
+let accessToken = require('../../constants.js');
 
 async function getUser(req, res) {
-    let accessToken = '31596f0031596f0031596f0071312457493315931596f0053e564fe0eb8dbe3c6b809bd';
     let maxUserID = 1000 * 1000;
     while (true) {
         let randomUserId = Math.floor(Math.random() * maxUserID) + 1;
@@ -33,7 +33,6 @@ function sleep(ms) {
 }
 
 async function getGroup(req, res, groupID) {
-    let accessToken = '31596f0031596f0031596f0071312457493315931596f0053e564fe0eb8dbe3c6b809bd';
     while (true) {
         let api_req = new Promise((resolve, reject) => {
             request('https://api.vk.com/method/groups.getById?access_token=' + accessToken + '&group_id=' + groupID.toString() + '&fields=members_count&v=5.131', (err, response, body) => {
